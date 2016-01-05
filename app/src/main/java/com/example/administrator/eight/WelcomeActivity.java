@@ -28,7 +28,7 @@ public class WelcomeActivity extends ActionBarActivity {
 
         @Override
         public void handleMessage(Message msg) {
-           Intent it = new Intent(WelcomeActivity.this,LoginActivity.class);
+           Intent it = new Intent(WelcomeActivity.this,BannerActivity.class);
             WelcomeActivity.this.startActivity(it);
             WelcomeActivity.this.finish();
         }
@@ -123,7 +123,7 @@ public class WelcomeActivity extends ActionBarActivity {
             @Override
             public void onFinish() {
 //                mContentView.setText("DONE");
-                Intent it = new Intent(WelcomeActivity.this,LoginActivity.class);
+                Intent it = new Intent(WelcomeActivity.this,BannerActivity.class);
                 WelcomeActivity.this.startActivity(it);
                 WelcomeActivity.this.finish();
 
