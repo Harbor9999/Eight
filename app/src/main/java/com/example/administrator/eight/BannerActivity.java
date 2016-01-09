@@ -1,6 +1,7 @@
 package com.example.administrator.eight;
 
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -10,11 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +29,7 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
 
 
     private List<ImageView> imageViewList;
+    private boolean isStop = false;
 
 
     @Override
@@ -41,6 +38,30 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
         setContentView(R.layout.activity_banner);
 
         init();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (!isStop) {
+                    SystemClock.sleep(3000);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+                        }
+                    });
+                }
+
+            }
+        }).start();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        isStop = true;
+        super.onDestroy();
 
     }
 
