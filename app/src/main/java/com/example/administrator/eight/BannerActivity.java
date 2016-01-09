@@ -11,25 +11,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BannerActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
-    private int previousEnabledPosition =0;
+    private int previousEnabledPosition = 0;
     private ViewPager mViewPager;
     private LinearLayout llPointGroup;
     private String[] imageDescription = {
-            "巩俐不低俗，我就不能低俗",
-            "扑树又回来啦！再唱经典老歌引万人大合唱",
+            "新华社最新消息",
+            "澎湃新闻你看了吗",
             "揭秘北京电影如何升级",
-            "乐视网TV版大派送",
-            "热血屌丝的反杀"
+            "微博的烦恼丝",
+            "公交车的人们"
     };
     private TextView tvDescription;
 
 
     private List<ImageView> imageViewList;
-    private boolean isStop = false;
+    private boolean isStop = false; //开启线程标志，当销毁activity时，停止
 
 
     @Override
@@ -45,6 +46,7 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
 
                 while (!isStop) {
                     SystemClock.sleep(3000);
+                    //自动滑动每一个广告条目
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -60,7 +62,7 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
 
     @Override
     protected void onDestroy() {
-        isStop = true;
+        isStop = true;   //销毁activity时 停止线程
         super.onDestroy();
 
     }
@@ -94,7 +96,7 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
             params.leftMargin = 5;
             view.setEnabled(false);
             view.setLayoutParams(params);
-
+            //增加“点”
             llPointGroup.addView(view);
 
         }
@@ -102,8 +104,8 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
 
         mViewPager.setAdapter(new MyAdapter());
         mViewPager.setOnPageChangeListener(this);
-
-        int index = (Integer.MAX_VALUE /2) - (Integer.MAX_VALUE /2 % imageViewList.size());
+        //设置的当前条目为很大数~~~ 形成一个伪 循环滚动的播放
+        int index = (Integer.MAX_VALUE / 2) - (Integer.MAX_VALUE / 2 % imageViewList.size());
         mViewPager.setCurrentItem(index);
     }
 
@@ -114,12 +116,12 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
 
     @Override
     public void onPageSelected(int position) {
+        //求模，循环播放每个条目
         int newPosition = position % imageViewList.size();
-
         tvDescription.setText(imageDescription[newPosition]);
         llPointGroup.getChildAt(previousEnabledPosition).setEnabled(false);
         llPointGroup.getChildAt(newPosition).setEnabled(true);
-        previousEnabledPosition = newPosition;
+        previousEnabledPosition = newPosition;      //先前的位置发现改变
 
     }
 
@@ -128,7 +130,9 @@ public class BannerActivity extends ActionBarActivity implements ViewPager.OnPag
 
     }
 
-
+    /**
+     * 适配器
+     */
 
     class MyAdapter extends PagerAdapter {
 

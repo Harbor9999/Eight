@@ -23,6 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:textColor="@android:color/white" />
 
+        <!--每一个图片下面的小“点”指示器-->
         <LinearLayout
             android:id="@+id/ll_point_group"
             android:layout_width="wrap_content"
